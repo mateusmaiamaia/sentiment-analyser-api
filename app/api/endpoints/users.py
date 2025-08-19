@@ -11,7 +11,7 @@ from app.models.user import User, UserCreate, UserRead
 from app.core.security import get_password_hash, create_access_token, verify_password
 from app.core.config import settings # <-- ADICIONADO: Para acessar as configurações
 
-router = APIRouter(prefix="/users", tags=["users"])
+router = APIRouter(tags=["users"])
 
 # REMOVIDO: Função get_db local, pois agora importamos a dependência de deps.py
 
@@ -47,6 +47,6 @@ def login_for_access_token(
     
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expires
+        subject=user.email, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}

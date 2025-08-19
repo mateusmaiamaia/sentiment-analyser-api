@@ -34,14 +34,14 @@ Esta lista detalha o progresso do projeto e as próximas etapas.
 #### **2. Funcionalidades Principais (Em Andamento)**
 * [x] Modelos de dados para as análises (`Analysis`, `SentimentResult`, `Post`).
 * [ ] Lógica de coleta de dados do Reddit.
-* [ ] Lógica de análise de sentimento com `vaderSentiment`.
-* [ ] Rotas da API para iniciar a análise e consultar os resultados.
-* [ ] Proteção de rotas com autenticação JWT.
+* [x] Lógica de análise de sentimento com `vaderSentiment`.
+* [x] Rotas da API para iniciar a análise e consultar os resultados.
+* [x] Proteção de rotas com autenticação JWT.
 
 #### **3. Conteinerização e Workers (Pendente)**
-* [ ] Configuração do **Redis** e **Celery**.
-* [ ] Criação do `Dockerfile` para a aplicação.
-* [ ] Criação do `docker-compose.yml` para orquestrar todos os serviços.
+* [x] Configuração do **Redis** e **Celery**.
+* [x] Criação do `Dockerfile` para a aplicação.
+* [x] Criação do `docker-compose.yml` para orquestrar todos os serviços.
 
 ---
 

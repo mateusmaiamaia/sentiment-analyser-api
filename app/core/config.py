@@ -1,16 +1,16 @@
-import os
-
 from pydantic_settings import BaseSettings
 
-from app.models.user import User # Adicione esta linha
-
 class Settings(BaseSettings):
-    DATABASE_URL: str = os.getenv("DATABASE_URL")
-    SECRET_KEY: str = os.getenv("SECRET_KEY")
+    API_V1_STR: str = "/api/v1"
+
+
+    DATABASE_URL: str
+    SECRET_KEY: str
+    REDIS_URL: str
+    TWITTER_BEARER_TOKEN: str
+
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
-    TWITTER_BEARER_TOKEN: str = os.getenv("TWITTER_BEARER_TOKEN")
-    REDIS_URL: str = os.getenv("REDIS_URL")
 
     class Config:
         env_file = ".env"
