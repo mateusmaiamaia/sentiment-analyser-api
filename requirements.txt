@@ -11,3 +11,4 @@ redis
 pydantic
 pydantic-settings 
 python-multipart
+praw
