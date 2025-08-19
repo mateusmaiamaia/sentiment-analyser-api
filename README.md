@@ -1,0 +1,3 @@
+# Plataforma de Análise de Sentimento
+
+Este projeto...
