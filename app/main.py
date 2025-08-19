@@ -1,7 +1,8 @@
 # app/main.py
 
 from fastapi import FastAPI
-from app.core.database import engine, SQLModel # Importe engine e SQLModel
+from sqlmodel import SQLModel                 
+from app.core.database import engine  
 from app.api.api_router import router as api_router
 
 # Importe os modelos para que o SQLModel os reconheça

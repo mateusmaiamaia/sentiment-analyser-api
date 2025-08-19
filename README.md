@@ -32,7 +32,7 @@ Esta lista detalha o progresso do projeto e as próximas etapas.
 * [x] Rotas de cadastro e login.
 
 #### **2. Funcionalidades Principais (Em Andamento)**
-* [ ] Modelos de dados para as análises (`Analysis`, `SentimentResult`, `Post`).
+* [x] Modelos de dados para as análises (`Analysis`, `SentimentResult`, `Post`).
 * [ ] Lógica de coleta de dados do Reddit.
 * [ ] Lógica de análise de sentimento com `vaderSentiment`.
 * [ ] Rotas da API para iniciar a análise e consultar os resultados.
@@ -47,6 +47,10 @@ Esta lista detalha o progresso do projeto e as próximas etapas.
 
 ## ⚙️ Como Rodar o Projeto
 
-*Instruções serão adicionadas aqui após a conclusão da etapa de conteinerização.*
+1. Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
+2. Na raiz do projeto, copie o arquivo `.env.example` para `.env` e preencha as variáveis de ambiente.
+3. Execute o comando:
+   ```bash
+   docker-compose up --build
 
 ---

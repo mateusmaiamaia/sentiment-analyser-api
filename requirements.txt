@@ -6,3 +6,8 @@ python-jose[cryptography]
 passlib[bcrypt]
 vaderSentiment
 tweepy
+celery
+redis
+pydantic
+pydantic-settings 
+python-multipart

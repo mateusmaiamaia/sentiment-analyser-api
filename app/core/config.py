@@ -2,6 +2,8 @@ import os
 
 from pydantic_settings import BaseSettings
 
+from app.models.user import User # Adicione esta linha
+
 class Settings(BaseSettings):
     DATABASE_URL: str = os.getenv("DATABASE_URL")
     SECRET_KEY: str = os.getenv("SECRET_KEY")
