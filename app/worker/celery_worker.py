@@ -1,5 +1,5 @@
 import os
-import praw
+import tweepy
 from celery import Celery
 from dotenv import load_dotenv
 from sqlmodel import Session, select
@@ -22,36 +22,28 @@ celery.conf.update(
 @celery.task
 def run_sentiment_analysis(search_term_id: int):
     """
-    Busca posts no Reddit usando PRAW, analisa o sentimento e salva no banco.
+    Busca tweets usando Tweepy, analisa o sentimento e salva no banco.
     """
     with Session(engine) as session:
         search_term = session.get(SearchTerm, search_term_id)
         if not search_term:
             return f"Termo de busca com ID {search_term_id} não encontrado."
 
-        # 1. Conecta-se à API do Reddit
-        reddit = praw.Reddit(
-            client_id=settings.REDDIT_CLIENT_ID,
-            client_secret=settings.REDDIT_CLIENT_SECRET,
-            user_agent=settings.REDDIT_USER_AGENT,
-        )
+        client = tweepy.Client(bearer_token=settings.TWITTER_BEARER_TOKEN)
 
-        # 2. Busca os 15 posts mais relevantes no subreddit 'all'
-        subreddit = reddit.subreddit("all")
-        submissions = subreddit.search(search_term.term, limit=15)
-
+        query = f'{search_term.term} -is:retweet lang:en'
+        response = client.search_recent_tweets(query=query, max_results=15)
+        
+        tweets = response.data or []
         analyzer = SentimentIntensityAnalyzer()
         posts_processed = 0
 
-        # 3. Itera sobre os posts encontrados
-        for submission in submissions:
-            # Verifica se já salvamos este post para evitar duplicatas
-            statement = select(Post).where(Post.post_id == submission.id)
+        for tweet in tweets:
+            statement = select(Post).where(Post.post_id == str(tweet.id))
             if session.exec(statement).first():
                 continue
 
-            text_to_analyze = f"{submission.title}. {submission.selftext}"
-            scores = analyzer.polarity_scores(text_to_analyze)
+            scores = analyzer.polarity_scores(tweet.text)
             
             label = "neutro"
             if scores['compound'] >= 0.05:
@@ -59,18 +51,17 @@ def run_sentiment_analysis(search_term_id: int):
             elif scores['compound'] <= -0.05:
                 label = "negativo"
 
-            # 4. Cria o objeto Post com dados reais
             new_post = Post(
-                text=text_to_analyze[:1000], # Limita o texto para caber no DB
+                text=tweet.text,
                 sentiment_score=scores['compound'],
                 sentiment_label=label,
-                post_id=submission.id,
-                source="reddit",
-                url=f"https://reddit.com{submission.permalink}",
+                post_id=str(tweet.id),
+                source="twitter",
+                url=f"https://twitter.com/anyuser/status/{tweet.id}",
                 search_term_id=search_term.id
             )
             session.add(new_post)
             posts_processed += 1
         
         session.commit()
-        return f"Análise para '{search_term.term}' concluída. {posts_processed} novos posts do Reddit foram processados."
+        return f"Análise para '{search_term.term}' concluída. {posts_processed} novos tweets foram processados."

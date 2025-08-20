@@ -1,13 +1,11 @@
-from pydantic_settings import BaseSettings 
+from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     DATABASE_URL: str
     SECRET_KEY: str
     REDIS_URL: str
-    REDDIT_CLIENT_ID: str
-    REDDIT_CLIENT_SECRET: str
-    REDDIT_USER_AGENT: str
+    TWITTER_BEARER_TOKEN: str
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
 
